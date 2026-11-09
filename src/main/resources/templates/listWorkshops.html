@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Workshop Registration</title>
+
+</head>
+
+<style type="text/css">
+    body {
+        width: 800px;
+        margin: auto;
+        font-family: Arial, sans-serif;
+    }
+    h1 {
+        color: #333;
+    }
+    form {
+        margin-top: 20px;
+    }
+    .workshop-option {
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    .workshop-option:hover {
+        background-color: #f5f5f5;
+    }
+    .error {
+        color: red;
+    }
+</style>
+
+<body>
+
+<header>
+    <h1>Welcome to our Workshop Registration App</h1>
+</header>
+
+
+<main>
+
+    <p class="error"
+       th:if="${errorMessage != null}"
+       th:text="${errorMessage}">
+    </p>
+
+    <p>
+        <a th:href="@{/workshops/workshop-form}">Add New Workshop</a>
+    </p>
+
+    <form th:action="@{/workshops}" method="GET">
+        <h2>Search workshops:</h2>
+
+        <label>Title or category contains:</label>
+        <input type="text" name="text" th:value="${param.text}">
+
+        <label>Max price:</label>
+        <input type="number" name="maxPrice"
+               min="0" step="0.01" th:value="${param.maxPrice}">
+
+        <input type="submit" value="Search">
+    </form>
+
+    <h2>Manage Workshops</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Free Seats</th>
+            <th>Instructor</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="workshop : ${workshops}">
+            <td th:text="${workshop.title}"></td>
+            <td th:text="${workshop.category}"></td>
+            <td th:text="${workshop.price} + ' MKD'"></td>
+            <td th:text="${workshop.capacity}"></td>
+            <td th:text="${workshop.instructor.name + ' ' + workshop.instructor.surname}"></td>
+            <td>
+                <a th:href="@{/workshops/workshop-form/{id}(id=${workshop.id})}">
+                    Edit
+                </a>
+
+                <form th:action="@{/workshops/delete/{id}(id=${workshop.id})}"
+                      method="POST">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>Register for a Workshop</h2>
+
+    <form action="/registration" method="POST">
+
+        <div class="workshop-option"
+             th:each="workshop : ${workshops}">
+
+            <input type="radio"
+                   name="workshopTitle"
+                   th:value="${workshop.title}"
+                   th:disabled="${workshop.capacity == 0}"
+                   required>
+
+            <span th:text="${workshop.title} + ' - '
+                + ${workshop.category} + ', '
+                + ${workshop.price} + ' MKD, '
+                + ${workshop.capacity} + ' free seats, Instructor: '
+                + ${workshop.instructor.name} + ' '
+                + ${workshop.instructor.surname}">
+            </span>
+        </div>
+
+        <h3>Enter your information:</h3>
+
+        <label>Your Name:</label>
+        <input type="text" name="participantName" required>
+        <br>
+
+        <label>Your Email:</label>
+        <input type="email" name="participantEmail" required>
+        <br>
+
+        <label>Number of seats:</label>
+        <input type="number" name="numSeats" min="1" required>
+        <br><br>
+
+        <input type="submit" value="Register">
+
+    </form>
+
+</main>
+
+</body>
+</html>

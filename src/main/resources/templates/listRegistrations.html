@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrations</title>
+</head>
+<body>
+
+<h1>All Registrations</h1>
+
+<table border="1" cellpadding="10">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Workshop</th>
+        <th>Participant Name</th>
+        <th>Email</th>
+        <th>Number of Seats</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="registration : ${registrations}">
+        <td th:text="${registration.id}"></td>
+        <td th:text="${registration.workshopTitle}"></td>
+        <td th:text="${registration.participantName}"></td>
+        <td th:text="${registration.participantEmail}"></td>
+        <td th:text="${registration.numberOfSeats}"></td>
+        <td>
+            <form th:action="'/registrations/delete/' + ${registration.id}"
+                  method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+
+<a href="/">Back to Workshops</a>
+
+</body>
+</html>
