@@ -117,8 +117,16 @@
                 + ${workshop.price} + ' MKD, '
                 + ${workshop.capacity} + ' free seats, Instructor: '
                 + ${workshop.instructor.name} + ' '
-                + ${workshop.instructor.surname}">
+                + ${workshop.instructor.surname} + ', rating: '
+                + ${workshop.getAverageRating}">
             </span>
+
+            <br>
+            <form th:action="@{/workshops/rate/{id}(id=${workshop.id})}" method="POST" style="margin-top: 5px;">
+                <label>Rate:</label>
+                <input type="number" name="rating" min="1" max="5">
+                <button type="submit">Rate</button>
+            </form>
         </div>
 
         <h3>Enter your information:</h3>

@@ -7,6 +7,7 @@ import mk.ukim.finki.wp.lab.repository.WorkshopRepository;
 import mk.ukim.finki.wp.lab.service.WorkshopService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +53,7 @@ public class WorkshopServiceImpl implements WorkshopService {
                 .orElse(0) + 1;
 
         Workshop workshop = new Workshop(
-                newId, title, category, price, capacity, instructor
+                newId, title, category, price, capacity, instructor, new ArrayList<>()
         );
 
         return workshopRepository.save(workshop);
@@ -71,7 +72,7 @@ public class WorkshopServiceImpl implements WorkshopService {
                 .orElseThrow(() -> new IllegalArgumentException("Instructor not found"));
 
         Workshop updatedWorkshop = new Workshop(
-                id, title, category, price, capacity, instructor
+                id, title, category, price, capacity, instructor, new ArrayList<>()
         );
 
         return workshopRepository.save(updatedWorkshop);
